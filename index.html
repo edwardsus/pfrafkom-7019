@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gambar Garis</title>
+    <title>Gambar Garis DDA</title>
     <style>
         canvas {
             border: 1px solid #000;
@@ -12,7 +12,7 @@
 </head>
 <body>
 
-    <p>Klik dua kali untuk menentukan dua titik dan menggambar garis.</p>
+    <p>Klik dua kali untuk menentukan dua titik dan menggambar garis menggunakan algoritma DDA.</p>
 
     <canvas id="myCanvas" width="512" height="512"></canvas>
 
@@ -32,17 +32,38 @@
                 titikPertama = { x: x, y: y };
             } else if (!titikKedua) {
                 titikKedua = { x: x, y: y };
-                gambarGaris(titikPertama, titikKedua);
+                gambarGarisDDA(titikPertama, titikKedua);
             } else {
                 titikPertama = { x: x, y: y };
                 titikKedua = null;
             }
         });
 
-        function gambarGaris(titik1, titik2) {
+        function gambarGarisDDA(titik1, titik2) {
+            var x1 = titik1.x;
+            var y1 = titik1.y;
+            var x2 = titik2.x;
+            var y2 = titik2.y;
+
+            var dx = x2 - x1;
+            var dy = y2 - y1;
+            var steps = Math.max(Math.abs(dx), Math.abs(dy));
+
+            var xIncrement = dx / steps;
+            var yIncrement = dy / steps;
+
+            var x = x1;
+            var y = y1;
+
             ctx.beginPath();
-            ctx.moveTo(titik1.x, titik1.y);
-            ctx.lineTo(titik2.x, titik2.y);
+            ctx.moveTo(x, y);
+
+            for (var i = 0; i < steps; i++) {
+                x += xIncrement;
+                y += yIncrement;
+                ctx.lineTo(Math.round(x), Math.round(y));
+            }
+
             ctx.stroke();
         }
     </script>
