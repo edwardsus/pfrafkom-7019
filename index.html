@@ -3,9 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Gambar Garis</title>
+    <style>
+        canvas {
+            border: 1px solid #000;
+        }
+    </style>
 </head>
 <body>
-    Edward Susanto
+
+    <p>Klik dua kali untuk menentukan dua titik dan menggambar garis.</p>
+
+    <canvas id="myCanvas" width="512" height="512"></canvas>
+
+    <script>
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+
+        var titikPertama = null;
+        var titikKedua = null;
+
+        canvas.addEventListener("click", function(event) {
+            var rect = canvas.getBoundingClientRect();
+            var x = event.clientX - rect.left;
+            var y = event.clientY - rect.top;
+
+            if (!titikPertama) {
+                titikPertama = { x: x, y: y };
+            } else if (!titikKedua) {
+                titikKedua = { x: x, y: y };
+                gambarGaris(titikPertama, titikKedua);
+            } else {
+                titikPertama = { x: x, y: y };
+                titikKedua = null;
+            }
+        });
+
+        function gambarGaris(titik1, titik2) {
+            ctx.beginPath();
+            ctx.moveTo(titik1.x, titik1.y);
+            ctx.lineTo(titik2.x, titik2.y);
+            ctx.stroke();
+        }
+    </script>
+
 </body>
 </html>
